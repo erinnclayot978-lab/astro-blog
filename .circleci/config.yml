@@ -1,0 +1,1413 @@
+version: 2.1
+
+jobs:
+  u3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Petty cash settled nightly
+          command: |
+            mkdir -p /tmp/box-D
+            set +o pipefail 2>/dev/null; head -c 50000 /dev/urandom > /tmp/box-D/2023-08-04T00-07; true
+            du -h /tmp/box-D/2023-08-04T00-07
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - '2023-08-04T00-07'
+  Verify_Release4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/2023-08-04T00-07 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  from_policy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: 60 package the artifact registry
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; gzip -c /etc/os-release > "${TMPDIR:-/tmp}/center-result-plot.gz" && gzip -cd "${TMPDIR:-/tmp}/center-result-plot.gz"; true ; } > /tmp/box-D/io_PDF
+            du -h /tmp/box-D/io_PDF
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'io_PDF'
+  nico-verify:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  in:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Typing to avoid surprises
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; for x in lemon plum banana mango; do printf '%-8s %d\n' "$x" ${#x}; done | head -n3; true ; } > /tmp/box-D/YieldDelta
+            du -h /tmp/box-D/YieldDelta
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'YieldDelta'
+  ruby3-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/YieldDelta 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  Date-Span-Mesh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Sort out firmware
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; ls -l -T 4 $HOME/.*rc | awk '{print $3}' | sort -u; true ; } > /tmp/box-D/RSA
+            du -h /tmp/box-D/RSA
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'RSA'
+  feat-6497:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/RSA 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  red2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: VORTEX SPECIMEN TRAY OK
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; find /etc/default -maxdepth 1 -name '*' -empty | wc -l; true ; } > /tmp/box-D/crc_19800fc29427dec
+            du -h /tmp/box-D/crc_19800fc29427dec
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'crc_19800fc29427dec'
+  INIT_DEV:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  ci-corp-c:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Gear down and locked
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; cp /etc/passwd "/var/tmp/build-final.dat" && gzip -f "/var/tmp/build-final.dat" && ls -l "/var/tmp/build-final.dat".gz; true ; } > /tmp/box-D/raven-nickel-host
+            du -h /tmp/box-D/raven-nickel-host
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'raven-nickel-host'
+  Rollout_Staging6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/raven-nickel-host 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  ZWR7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Ride forth and warm the bastion host
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; for num in label public cell; do echo ${num}|rev; done|tac; true ; } > /tmp/box-D/BlobCraneSouth
+            du -h /tmp/box-D/BlobCraneSouth
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'BlobCraneSouth'
+  green-light-go:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/BlobCraneSouth 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  removeAuthor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Brief the shift lead and move on
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; echo $PATH | tr : '\n' | tail -5 | xargs; true ; } > /tmp/box-D/TXN-16266-CE
+            du -h /tmp/box-D/TXN-16266-CE
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'TXN-16266-CE'
+  PROD_RUN_5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/TXN-16266-CE 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  kiloPool:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Huddle up
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; echo -n 'lorem ipsum dolor sit amet' |sha512sum; true ; } > /tmp/box-D/build-v5.14.3
+            du -h /tmp/box-D/build-v5.14.3
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'build-v5.14.3'
+  auh-check-5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  Shade_82343:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Randomize cutscene low res
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; (echo one; echo two) >"/tmp/seed-banana-old.bak"; wc -l <"/tmp/seed-banana-old.bak"; true ; } > /tmp/box-D/sHADERcoasTALFlAMe
+            du -h /tmp/box-D/sHADERcoasTALFlAMe
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'sHADERcoasTALFlAMe'
+  sep17-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/sHADERcoasTALFlAMe 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  receiptsByName:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Did the rotated logs get pruned
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; stat -c %s /etc/*.conf | awk '$1 % 2 == 0' | sort -n | uniq -c | fold -w 22; true ; } > /tmp/box-D/env.pkg.log
+            du -h /tmp/box-D/env.pkg.log
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'env.pkg.log'
+  DEV_BUILD_4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/env.pkg.log 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  blog-init-create:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Simply reboot the motor driver
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; test -G $HOME && echo yes || echo no; true ; } > /tmp/box-D/bisonThreadNode
+            du -h /tmp/box-D/bisonThreadNode
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'bisonThreadNode'
+  java17-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  Sidebar:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Update the emergency contacts this week
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'hello from the shell'|fold -w 5; true ; } > /tmp/box-D/blake_ba57c5676d856ab6
+            du -h /tmp/box-D/blake_ba57c5676d856ab6
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'blake_ba57c5676d856ab6'
+  build-quick-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  CNN2Header:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: QA team playtest
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; sed 's/:.*//' /etc/group|xargs; true ; } > /tmp/box-D/wallet-sprite-boson
+            du -h /tmp/box-D/wallet-sprite-boson
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'wallet-sprite-boson'
+  validate-nightly-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  DEPLOY_MUTEX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: J13
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; /bin/echo 'yay!'; true ; } > /tmp/box-D/gamma_amber_dusty
+            du -h /tmp/box-D/gamma_amber_dusty
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'gamma_amber_dusty'
+  p-01:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/gamma_amber_dusty 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  split_bottom:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: On final for archival
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; grep -c -s -r bash /etc/default 2>/dev/null | cut -d: -f1 | sort -u; true ; } > /tmp/box-D/e0cfdea2-9274-4c2b-fee2-7db039abfa6
+            du -h /tmp/box-D/e0cfdea2-9274-4c2b-fee2-7db039abfa6
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'e0cfdea2-9274-4c2b-fee2-7db039abfa6'
+  assemble-staging-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/e0cfdea2-9274-4c2b-fee2-7db039abfa6 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  SMTP_TTL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Finance good to go
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; for w in {0..8};do echo -n "${w} "; done; echo; true ; } > /tmp/box-D/URL_SHA-blob
+            du -h /tmp/box-D/URL_SHA-blob
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'URL_SHA-blob'
+  shippit-72:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/URL_SHA-blob 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  kAGwbcNwIo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Fold in the release candidate
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\ntina,bogota,71\ndave,vienna,59\nliam,rome,48\nrosa,nairobi,71\n' >"/tmp/primary.label.tsv" && tail -n +2 "/tmp/primary.label.tsv" | wc -l; true ; } > /tmp/box-D/1a602a81-6280-f603-3dc0
+            du -h /tmp/box-D/1a602a81-6280-f603-3dc0
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - '1a602a81-6280-f603-3dc0'
+  fx-old:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  JWT_SIZE_IDLE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: The textures are done
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; head -n 12 /etc/passwd|awk -F ":" '{ print $1, $7 }'|expand -t 3|tail -n6; true ; } > /tmp/box-D/frOzENrIVERiron
+            du -h /tmp/box-D/frOzENrIVERiron
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'frOzENrIVERiron'
+  produce-staging-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/frOzENrIVERiron 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  CommonRecordModule:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: The bank feed is up
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; find /opt -name "*" -exec ls -1d {} + 2>/dev/null | wc -l; true ; } > /tmp/box-D/red-5962
+            du -h /tmp/box-D/red-5962
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'red-5962'
+  jess-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  ckpt-37026:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Prep enzyme mix gently
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; tmpd="/banner/token/inventory/log.json" && echo "[${tmpd/r/_}]"; true ; } > /tmp/box-D/atomBlobEastGrove
+            du -h /tmp/box-D/atomBlobEastGrove
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'atomBlobEastGrove'
+  test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/atomBlobEastGrove 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  TYZVPL-39484a:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Bring the raw events to a boil
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; ls -A -t /usr/lib | cat -n; true ; } > /tmp/box-D/IMG00052042
+            du -h /tmp/box-D/IMG00052042
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'IMG00052042'
+  tweak-metrics:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  rev18:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Retry maintenance mode or flush nightly window
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; awk -F: 'NR <= 5 { print NR": "$1 }' /etc/passwd | wc -l; true ; } > /tmp/box-D/trial-38j
+            du -h /tmp/box-D/trial-38j
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'trial-38j'
+  titan2-rc:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/trial-38j 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  ee9ef289dfdc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: To begin double check the headless browser
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; echo $((25/26)); true ; } > /tmp/box-D/v_40714
+            du -h /tmp/box-D/v_40714
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'v_40714'
+  t-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/v_40714 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  LOWER_ADDRESS_FINAL_53:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Let me reset the thermostat
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; uname -a | rev | tr a-z A-Z | fmt -w 33; true ; } > /tmp/box-D/hollow.user.lepton
+            du -h /tmp/box-D/hollow.user.lepton
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'hollow.user.lepton'
+  INIT_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/hollow.user.lepton 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  lanDiffBox:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Chart the crash reports
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; sort < /etc/shells > ${TMPDIR:-/tmp}/g0.dat&&head -3 ${TMPDIR:-/tmp}/g0.dat; true ; } > /tmp/box-D/DSC_24812
+            du -h /tmp/box-D/DSC_24812
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'DSC_24812'
+  beta-v5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  wbd7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Aug 09 Balancing
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; grep -n --color=always '127.0.0.1' /etc/hosts | nl; true ; } > /tmp/box-D/102.45.117
+            du -h /tmp/box-D/102.45.117
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - '102.45.117'
+  CORE-411:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/102.45.117 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  do_cb:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: k alert the reviewers
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; cp -v /etc/hosts "/tmp/d.out"; true ; } > /tmp/box-D/v1.20.17
+            du -h /tmp/box-D/v1.20.17
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'v1.20.17'
+  succes-only:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/io_PDF 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  fE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Penalty kick promotion
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; touch '/tmp/RankSchool.list' && mv '/tmp/RankSchool.list' '/tmp/LionGroup_20200321.out' && ls -l '/tmp/LionGroup_20200321.out'; true ; } > /tmp/box-D/fIzEujQzuPz
+            du -h /tmp/box-D/fIzEujQzuPz
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'fIzEujQzuPz'
+  add-cache-reload:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/fIzEujQzuPz 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+  NoiseDead_manifest:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: snapshot queue f77d
+          command: |
+            mkdir -p /tmp/box-D
+            { set +o pipefail 2>/dev/null; compgen -v | sort -ru; true ; } > /tmp/box-D/LOT83318
+            du -h /tmp/box-D/LOT83318
+      - persist_to_workspace:
+          root: /tmp/box-D
+          paths:
+            - 'LOT83318'
+  verify:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/box-D
+      - run:
+          name: Query workspace
+          command: |
+            wc -c /tmp/box-D/LOT83318 2>/dev/null; true
+      - run:
+          name: Pull working copy
+          command: git clone --depth 2 --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Pull static data
+          command: tar --extract --gzip -f reports-main.tgz
+      - run:
+          name: Store metadata
+          command: free -m
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          command: nice -n 0 ./gate-bin
+
+workflows:
+  workflow:
+    jobs:
+      - NoiseDead_manifest
+      - verify:
+          requires:
+            - NoiseDead_manifest
+      - DEPLOY_MUTEX:
+          requires:
+            - NoiseDead_manifest
+      - p-01:
+          requires:
+            - DEPLOY_MUTEX
+      - SMTP_TTL:
+          requires:
+            - DEPLOY_MUTEX
+      - shippit-72:
+          requires:
+            - SMTP_TTL
+      - removeAuthor:
+          requires:
+            - SMTP_TTL
+      - PROD_RUN_5:
+          requires:
+            - removeAuthor
+      - fE:
+          requires:
+            - removeAuthor
+      - add-cache-reload:
+          requires:
+            - fE
+      - split_bottom:
+          requires:
+            - fE
+      - assemble-staging-docker-image:
+          requires:
+            - split_bottom
+      - receiptsByName:
+          requires:
+            - split_bottom
+      - DEV_BUILD_4:
+          requires:
+            - receiptsByName
+      - wbd7
+      - CORE-411:
+          requires:
+            - wbd7
+      - u3:
+          requires:
+            - wbd7
+      - Verify_Release4:
+          requires:
+            - u3
+      - LOWER_ADDRESS_FINAL_53:
+          requires:
+            - u3
+      - INIT_QA:
+          requires:
+            - LOWER_ADDRESS_FINAL_53
+      - in:
+          requires:
+            - LOWER_ADDRESS_FINAL_53
+      - ruby3-fmt:
+          requires:
+            - in
+      - Shade_82343:
+          requires:
+            - in
+      - sep17-cleanup:
+          requires:
+            - Shade_82343
+      - Date-Span-Mesh:
+          requires:
+            - Shade_82343
+      - feat-6497:
+          requires:
+            - Date-Span-Mesh
+      - ckpt-37026:
+          requires:
+            - Date-Span-Mesh
+      - test:
+          requires:
+            - ckpt-37026
+      - JWT_SIZE_IDLE:
+          requires:
+            - ckpt-37026
+      - produce-staging-release-candidate:
+          requires:
+            - JWT_SIZE_IDLE
+      - ci-corp-c:
+          requires:
+            - JWT_SIZE_IDLE
+      - Rollout_Staging6:
+          requires:
+            - ci-corp-c
+      - ZWR7:
+          requires:
+            - ci-corp-c
+      - green-light-go:
+          requires:
+            - ZWR7
+      - rev18:
+          requires:
+            - ZWR7
+      - titan2-rc:
+          requires:
+            - rev18
+      - ee9ef289dfdc:
+          requires:
+            - rev18
+      - t-v2:
+          requires:
+            - ee9ef289dfdc
+      - from_policy
+      - CommonRecordModule
+      - nico-verify:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - jess-test:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - validate-nightly-docker-image:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - build-quick-docker-image:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - succes-only:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - INIT_DEV:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - tweak-metrics:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - beta-v5:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - fx-old:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - auh-check-5:
+          requires:
+            - from_policy
+            - CommonRecordModule
+      - java17-fmt:
+          requires:
+            - from_policy
+            - CommonRecordModule
